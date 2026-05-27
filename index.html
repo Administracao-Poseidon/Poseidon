@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuaVibes</title>
+    <title>Poseidon Comercial</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -14,836 +14,463 @@
 
         body {
             font-family: 'Roboto', sans-serif;
-            background: #0a0f2a;
-            color: white;
+            background: linear-gradient(135deg, #0a0f2a 0%, #1a1f3a 50%, #0a0f2a 100%);
+            min-height: 100vh;
+            color: #fff;
             overflow-x: hidden;
         }
 
-        /* Navbar */
-        .navbar {
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            border-bottom: 1px solid rgba(0,212,255,0.3);
+        /* Efeito de ondas */
+        .wave-bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
         }
 
-        .logo {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #00d4ff;
-        }
-
-        .device-selector {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .device-selector select {
-            padding: 10px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid #00d4ff;
-            border-radius: 8px;
-            color: white;
-            font-size: 1em;
-            cursor: pointer;
-        }
-
-        .device-selector button {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #00d4ff, #0099cc);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .device-selector button:hover {
-            transform: translateY(-2px);
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logout-btn {
-            background: rgba(231,76,60,0.2);
-            border: 1px solid #e74c3c;
-            padding: 8px 16px;
-            border-radius: 8px;
-            color: #e74c3c;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .logout-btn:hover {
-            background: rgba(231,76,60,0.4);
-        }
-
-        /* Container principal */
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        /* Status Cards */
-        .status-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            position: relative;
         }
 
-        .status-card {
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(0,212,255,0.3);
+        }
+
+        .logo-sub {
+            font-size: 0.3em;
+            display: block;
+            color: #7f8c8d;
+        }
+
+        .tagline {
+            color: #bdc3c7;
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+
+        /* Cards */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+        }
+
+        .auth-card {
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 25px;
-            text-align: center;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.2);
-            transition: transform 0.3s;
         }
 
-        .status-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .status-card .icon {
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
-
-        .status-card .label {
-            font-size: 0.9em;
-            color: #bdc3c7;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .status-card .value {
-            font-size: 2.5em;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        .status-card .unit {
-            font-size: 0.8em;
-            color: #bdc3c7;
-        }
-
-        .status-card .status-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            margin-top: 10px;
-        }
-
-        .badge-normal { background: #2ecc71; }
-        .badge-warning { background: #e74c3c; }
-        .badge-alert { background: #f39c12; }
-
-        /* Gráficos */
-        .chart-container {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-
-        .chart-title {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            color: #00d4ff;
-        }
-
-        canvas {
-            max-height: 300px;
-        }
-
-        /* Controles */
-        .controls-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .control-panel {
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 20px;
-        }
-
-        .control-panel h3 {
-            color: #00d4ff;
-            margin-bottom: 15px;
-        }
-
-        .control-buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .control-btn {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .control-btn.feed {
-            background: linear-gradient(135deg, #f39c12, #e67e22);
-            color: white;
-        }
-
-        .control-btn.aux {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-        }
-
-        .control-btn.light {
-            background: linear-gradient(135deg, #f1c40f, #f39c12);
-            color: white;
-        }
-
-        .control-btn.active {
-            box-shadow: 0 0 20px rgba(0,212,255,0.5);
-            transform: scale(1.05);
-        }
-
-        /* Schedule */
-        .schedule-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .schedule-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .schedule-time {
-            font-family: monospace;
-            font-size: 1.2em;
-        }
-
-        .schedule-actions button {
-            background: rgba(231,76,60,0.2);
-            border: 1px solid #e74c3c;
-            padding: 5px 10px;
-            border-radius: 5px;
-            color: #e74c3c;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-
-        .add-schedule {
+        .auth-tabs {
             display: flex;
             gap: 10px;
-            margin-top: 15px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
         }
 
-        .add-schedule input {
-            flex: 1;
-            padding: 10px;
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #bdc3c7;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: #00d4ff;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #00d4ff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #bdc3c7;
+            font-size: 0.9em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 8px;
             color: white;
+            font-size: 1em;
+            transition: all 0.3s;
         }
 
-        .add-schedule button {
-            padding: 10px 20px;
-            background: #00d4ff;
+        .form-group input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
             border: none;
             border-radius: 8px;
-            color: #0a0f2a;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
             cursor: pointer;
+            transition: transform 0.3s;
         }
 
-        /* Online Status */
-        .online-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            background: rgba(0,0,0,0.5);
+        .btn:hover {
+            transform: translateY(-2px);
         }
 
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        .status-dot.online {
-            background: #2ecc71;
-        }
-
-        .status-dot.offline {
-            background: #e74c3c;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        /* Loading */
-        .loading {
+        .info-text {
             text-align: center;
-            padding: 40px;
+            margin-top: 20px;
+            color: #bdc3c7;
+            font-size: 0.85em;
         }
 
-        .spinner {
-            border: 3px solid rgba(0,212,255,0.3);
-            border-top: 3px solid #00d4ff;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .alert.show {
+            display: block;
+            animation: fadeIn 0.3s;
         }
 
-        /* Responsive */
+        .alert-error {
+            background: rgba(231,76,60,0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+
+        .alert-success {
+            background: rgba(46,204,113,0.2);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
         @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .status-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .controls-grid {
-                grid-template-columns: 1fr;
-            }
+            .logo { font-size: 2em; }
+            .auth-card { margin: 20px; padding: 30px; }
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="logo">🌊 AquaVibes</div>
-        <div class="device-selector">
-            <select id="deviceSelect">
-                <option value="">Selecione um dispositivo</option>
-            </select>
-            <button onclick="addDeviceModal()">+ Adicionar Dispositivo</button>
-        </div>
-        <div class="user-info">
-            <span id="userName"></span>
-            <div class="online-status">
-                <div class="status-dot" id="deviceStatus"></div>
-                <span id="deviceStatusText">Desconectado</span>
-            </div>
-            <button class="logout-btn" onclick="logout()">Sair</button>
-        </div>
-    </div>
-
+    <canvas class="wave-bg" id="waveCanvas"></canvas>
+    
     <div class="container">
-        <div id="dashboardContent">
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>Carregando dados do dispositivo...</p>
+        <div class="header">
+            <div class="logo">
+                POSEIDON
+                <span class="logo-sub">COMMERCIAL</span>
+            </div>
+            <div class="tagline">Sistema Inteligente de Monitoramento de Aquários</div>
+        </div>
+
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-tabs">
+                    <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+                    <button class="tab-btn" onclick="switchTab('register')">Cadastro</button>
+                </div>
+
+                <div id="loginTab" class="tab-content active">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label>📧 E-mail</label>
+                            <input type="email" id="loginEmail" required placeholder="seu@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>🔒 Senha</label>
+                            <input type="password" id="loginPassword" required placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn">Entrar no Sistema</button>
+                        <div class="info-text">
+                            🔐 Acesso seguro via Firebase Authentication
+                        </div>
+                    </form>
+                </div>
+
+                <div id="registerTab" class="tab-content">
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label>👤 Nome Completo</label>
+                            <input type="text" id="regName" required placeholder="Seu nome">
+                        </div>
+                        <div class="form-group">
+                            <label>📧 E-mail</label>
+                            <input type="email" id="regEmail" required placeholder="seu@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>🔒 Senha</label>
+                            <input type="password" id="regPassword" required placeholder="Mínimo 6 caracteres">
+                        </div>
+                        <div class="form-group">
+                            <label>🔑 ID do Dispositivo ESP32</label>
+                            <input type="text" id="regDeviceId" placeholder="Ex: 2C3A4B5C6D7E8F90">
+                        </div>
+                        <button type="submit" class="btn">Criar Conta</button>
+                        <div class="info-text">
+                            📡 Após cadastro, você poderá monitorar seu aquário de qualquer lugar
+                        </div>
+                    </form>
+                </div>
+
+                <div id="alert" class="alert"></div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal Adicionar Dispositivo -->
-    <div id="addDeviceModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; justify-content:center; align-items:center;">
-        <div style="background:#1a1f3a; padding:30px; border-radius:20px; max-width:500px; margin:20px;">
-            <h3 style="margin-bottom:20px;">Adicionar Dispositivo</h3>
-            <input type="text" id="newDeviceId" placeholder="ID do Dispositivo" style="width:100%; padding:12px; margin-bottom:15px; background:rgba(255,255,255,0.1); border:1px solid #00d4ff; border-radius:8px; color:white;">
-            <input type="text" id="newDeviceName" placeholder="Nome do Dispositivo (ex: Aquário Sala)" style="width:100%; padding:12px; margin-bottom:15px; background:rgba(255,255,255,0.1); border:1px solid #00d4ff; border-radius:8px; color:white;">
-            <div style="display:flex; gap:10px;">
-                <button onclick="addDevice()" style="flex:1; padding:12px; background:#00d4ff; border:none; border-radius:8px; cursor:pointer;">Adicionar</button>
-                <button onclick="closeModal()" style="flex:1; padding:12px; background:#e74c3c; border:none; border-radius:8px; cursor:pointer;">Cancelar</button>
-            </div>
+        <div class="footer">
+            <p>© 2024 Poseidon Comercial - Tecnologia em Monitoramento de Aquários</p>
+            <p>Sistema em Tempo Real com Firebase</p>
         </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Configuração do Firebase - Substitua pelos dados do seu projeto
         const firebaseConfig = {
-apiKey: "AIzaSyBzKzYAbPVHaAgwMOKTyJlHM2TrxzYrWdM",
-authDomain: "aquavibes-ver12.firebaseapp.com",
-databaseURL: "https://aquavibes-ver12-default-rtdb.firebaseio.com",
-projectId: "aquavibes-ver12",
-storageBucket: "aquavibes-ver12.firebasestorage.app",
-messagingSenderId: "101982557754",
-appId: "1:101982557754:web:55556501fcdd449f5a4703"
- 
+            apiKey: "SUA_API_KEY",
+            authDomain: "seu-projeto.firebaseapp.com",
+            databaseURL: "https://seu-projeto.firebaseio.com",
+            projectId: "seu-projeto",
+            storageBucket: "seu-projeto.appspot.com",
+            messagingSenderId: "seu-sender-id",
+            appId: "seu-app-id"
         };
 
+        // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
 
-        let currentUser = null;
-        let currentDevice = null;
-        let tempChart = null;
-        let phChart = null;
+        // Efeito de ondas no background
+        const canvas = document.getElementById('waveCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        function drawWaves() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0a0f2a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const time = Date.now() / 1000;
+            
+            for (let i = 0; i < 3; i++) {
+                ctx.beginPath();
+                ctx.moveTo(0, canvas.height);
+                
+                for (let x = 0; x <= canvas.width; x += 50) {
+                    const y = canvas.height - 100 - 
+                              Math.sin(x * 0.005 + time + i) * 30 -
+                              Math.cos(x * 0.01 + time * 0.7 + i) * 20;
+                    ctx.lineTo(x, y);
+                }
+                
+                ctx.lineTo(canvas.width, canvas.height);
+                ctx.fillStyle = `rgba(0, 180, 255, ${0.05 - i * 0.015})`;
+                ctx.fill();
+            }
+            
+            requestAnimationFrame(drawWaves);
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        drawWaves();
 
-        // Verificar autenticação
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                currentUser = user;
-                loadUserData();
+        // Funções de UI
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            if (tab === 'login') {
+                tabs[0].classList.add('active');
+                document.getElementById('loginTab').classList.add('active');
             } else {
-                window.location.href = 'index.html';
-            }
-        });
-
-        async function loadUserData() {
-            // Carregar perfil do usuário
-            const profileRef = await database.ref(`users/${currentUser.uid}/profile`).once('value');
-            const profile = profileRef.val();
-            if (profile) {
-                document.getElementById('userName').innerHTML = `👤 ${profile.name}`;
+                tabs[1].classList.add('active');
+                document.getElementById('registerTab').classList.add('active');
             }
             
-            // Carregar dispositivos
-            loadDevices();
+            hideAlert();
         }
 
-        async function loadDevices() {
-            const devicesRef = await database.ref(`users/${currentUser.uid}/devices`).once('value');
-            const devices = devicesRef.val();
-            const select = document.getElementById('deviceSelect');
-            
-            select.innerHTML = '<option value="">Selecione um dispositivo</option>';
-            
-            if (devices) {
-                Object.keys(devices).forEach(deviceId => {
-                    const option = document.createElement('option');
-                    option.value = deviceId;
-                    option.textContent = devices[deviceId].name || deviceId;
-                    select.appendChild(option);
-                });
-            }
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alert');
+            alertDiv.textContent = message;
+            alertDiv.className = `alert alert-${type} show`;
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+            }, 5000);
         }
 
-        document.getElementById('deviceSelect').addEventListener('change', async (e) => {
-            const deviceId = e.target.value;
-            if (deviceId) {
-                currentDevice = deviceId;
-                await loadDeviceData();
-                startRealtimeUpdates();
-            }
-        });
-
-        async function loadDeviceData() {
-            if (!currentDevice) return;
-            
-            const dashboardContent = document.getElementById('dashboardContent');
-            dashboardContent.innerHTML = `
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p>Carregando dados do dispositivo ${currentDevice}...</p>
-                </div>
-            `;
-            
-            // Carregar dados básicos do dispositivo
-            const deviceRef = await database.ref(`devices/${currentDevice}`).once('value');
-            const deviceData = deviceRef.val();
-            
-            if (deviceData) {
-                renderDashboard(deviceData);
-            }
+        function hideAlert() {
+            const alertDiv = document.getElementById('alert');
+            alertDiv.classList.remove('show');
         }
 
-        function renderDashboard(deviceData) {
-            const sensors = deviceData.sensors || {};
-            const status = deviceData.status || {};
-            const online = deviceData.online || false;
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
             
-            // Atualizar status online
-            const statusDot = document.getElementById('deviceStatus');
-            const statusText = document.getElementById('deviceStatusText');
-            if (online) {
-                statusDot.className = 'status-dot online';
-                statusText.textContent = 'Online';
-            } else {
-                statusDot.className = 'status-dot offline';
-                statusText.textContent = 'Offline';
-            }
-            
-            const html = `
-                <div class="status-grid">
-                    <div class="status-card">
-                        <div class="icon">🌡️</div>
-                        <div class="label">TEMPERATURA</div>
-                        <div class="value" id="tempValue">${(sensors.temperature || 0).toFixed(1)}</div>
-                        <div class="unit">°C</div>
-                        <div class="status-badge ${getTempBadge(sensors.temperature)}">${getTempStatus(sensors.temperature)}</div>
-                    </div>
-                    
-                    <div class="status-card">
-                        <div class="icon">🧪</div>
-                        <div class="label">pH</div>
-                        <div class="value" id="phValue">${(sensors.ph || 0).toFixed(2)}</div>
-                        <div class="status-badge ${getPhBadge(sensors.ph)}">${getPhStatus(sensors.ph)}</div>
-                    </div>
-                    
-                    <div class="status-card">
-                        <div class="icon">💧</div>
-                        <div class="label">TURBIDEZ</div>
-                        <div class="value" id="turbValue">${(sensors.turbidity || 0).toFixed(0)}</div>
-                        <div class="unit">%</div>
-                        <div class="status-badge ${getTurbBadge(sensors.turbidity)}">${getTurbStatus(sensors.turbidity)}</div>
-                    </div>
-                    
-                    <div class="status-card">
-                        <div class="icon">💦</div>
-                        <div class="label">NÍVEL DE ÁGUA</div>
-                        <div class="value" id="levelValue">${sensors.water_level ? '✓ NORMAL' : '⚠️ MÍNIMO'}</div>
-                        <div class="status-badge ${sensors.water_level ? 'badge-normal' : 'badge-warning'}">${sensors.water_level ? 'OK' : 'ALERTA'}</div>
-                    </div>
-                </div>
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
                 
-                <div class="chart-container">
-                    <div class="chart-title">📈 Histórico de Temperatura</div>
-                    <canvas id="tempChart"></canvas>
-                </div>
+                // Verificar se usuário tem dispositivos associados
+                const userDevices = await database.ref(`users/${user.uid}/devices`).once('value');
                 
-                <div class="chart-container">
-                    <div class="chart-title">📊 Histórico de pH</div>
-                    <canvas id="phChart"></canvas>
-                </div>
-                
-                <div class="controls-grid">
-                    <div class="control-panel">
-                        <h3>🐟 Alimentador Automático</h3>
-                        <div class="control-buttons">
-                            <button class="control-btn feed" onclick="manualFeed()">🍽️ Alimentar Agora</button>
-                        </div>
-                    </div>
+                if (userDevices.exists()) {
+                    // Salvar dados do usuário
+                    localStorage.setItem('poseidon_user', JSON.stringify({
+                        uid: user.uid,
+                        email: user.email,
+                        devices: userDevices.val()
+                    }));
                     
-                    <div class="control-panel">
-                        <h3>🔌 Controles Remotos</h3>
-                        <div class="control-buttons">
-                            <button class="control-btn aux ${status.aux_relay ? 'active' : ''}" onclick="toggleRelay('aux')">🔧 Auxiliar: ${status.aux_relay ? 'ON' : 'OFF'}</button>
-                            <button class="control-btn light ${status.light_relay ? 'active' : ''}" onclick="toggleRelay('light')">💡 Iluminação: ${status.light_relay ? 'ON' : 'OFF'}</button>
-                        </div>
-                    </div>
-                    
-                    <div class="control-panel">
-                        <h3>⏰ Programação do Alimentador</h3>
-                        <div id="scheduleList" class="schedule-list"></div>
-                        <div class="add-schedule">
-                            <input type="time" id="scheduleTime" step="60">
-                            <button onclick="addSchedule()">+ Adicionar</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('dashboardContent').innerHTML = html;
-            
-            // Carregar histórico para gráficos
-            loadHistoryData();
-            
-            // Carregar programação
-            loadSchedule();
-        }
-
-        function getTempBadge(temp) {
-            if (temp >= 24 && temp <= 28) return 'badge-normal';
-            return 'badge-warning';
-        }
-        
-        function getTempStatus(temp) {
-            if (temp >= 24 && temp <= 28) return 'Ideal';
-            if (temp < 24) return 'Muito Frio';
-            return 'Muito Quente';
-        }
-        
-        function getPhBadge(ph) {
-            if (ph >= 6.5 && ph <= 7.5) return 'badge-normal';
-            return 'badge-warning';
-        }
-        
-        function getPhStatus(ph) {
-            if (ph >= 6.5 && ph <= 7.5) return 'Ideal';
-            if (ph < 6.5) return 'Ácido';
-            return 'Alcalino';
-        }
-        
-        function getTurbBadge(turb) {
-            if (turb <= 30) return 'badge-normal';
-            if (turb <= 60) return 'badge-warning';
-            return 'badge-alert';
-        }
-        
-        function getTurbStatus(turb) {
-            if (turb <= 30) return 'Água Limpa';
-            if (turb <= 60) return 'Água Turva';
-            return 'Água Suja';
-        }
-
-        async function loadHistoryData() {
-            const historyRef = await database.ref(`devices/${currentDevice}/history`).orderByKey().limitToLast(20).once('value');
-            const history = historyRef.val();
-            
-            if (history) {
-                const timestamps = [];
-                const temps = [];
-                const phs = [];
-                
-                Object.keys(history).sort().forEach(key => {
-                    timestamps.push(new Date(parseInt(key)).toLocaleTimeString());
-                    temps.push(history[key].temp || 0);
-                    phs.push(history[key].ph || 0);
-                });
-                
-                createCharts(timestamps, temps, phs);
-            }
-        }
-
-        function createCharts(labels, temps, phs) {
-            const tempCtx = document.getElementById('tempChart').getContext('2d');
-            const phCtx = document.getElementById('phChart').getContext('2d');
-            
-            if (tempChart) tempChart.destroy();
-            if (phChart) phChart.destroy();
-            
-            tempChart = new Chart(tempCtx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Temperatura (°C)',
-                        data: temps,
-                        borderColor: '#00d4ff',
-                        backgroundColor: 'rgba(0,212,255,0.1)',
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: { labels: { color: 'white' } }
-                    }
-                }
-            });
-            
-            phChart = new Chart(phCtx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'pH',
-                        data: phs,
-                        borderColor: '#2ecc71',
-                        backgroundColor: 'rgba(46,204,113,0.1)',
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: { labels: { color: 'white' } }
-                    }
-                }
-            });
-        }
-
-        function startRealtimeUpdates() {
-            if (!currentDevice) return;
-            
-            // Listeners para atualizações em tempo real
-            const sensorRef = database.ref(`devices/${currentDevice}/sensors`);
-            sensorRef.off();
-            sensorRef.on('value', (snapshot) => {
-                const sensors = snapshot.val();
-                if (sensors && document.getElementById('tempValue')) {
-                    document.getElementById('tempValue').innerHTML = (sensors.temperature || 0).toFixed(1);
-                    document.getElementById('phValue').innerHTML = (sensors.ph || 0).toFixed(2);
-                    document.getElementById('turbValue').innerHTML = (sensors.turbidity || 0).toFixed(0);
-                    document.getElementById('levelValue').innerHTML = sensors.water_level ? '✓ NORMAL' : '⚠️ MÍNIMO';
-                }
-            });
-            
-            const statusRef = database.ref(`devices/${currentDevice}/status`);
-            statusRef.off();
-            statusRef.on('value', (snapshot) => {
-                const status = snapshot.val();
-                if (status) {
-                    const auxBtn = document.querySelector('.control-btn.aux');
-                    const lightBtn = document.querySelector('.control-btn.light');
-                    if (auxBtn) auxBtn.innerHTML = `🔧 Auxiliar: ${status.aux_relay ? 'ON' : 'OFF'}`;
-                    if (lightBtn) lightBtn.innerHTML = `💡 Iluminação: ${status.light_relay ? 'ON' : 'OFF'}`;
-                    if (auxBtn && status.aux_relay) auxBtn.classList.add('active');
-                    else if (auxBtn) auxBtn.classList.remove('active');
-                    if (lightBtn && status.light_relay) lightBtn.classList.add('active');
-                    else if (lightBtn) lightBtn.classList.remove('active');
-                }
-            });
-            
-            const onlineRef = database.ref(`devices/${currentDevice}/online`);
-            onlineRef.off();
-            onlineRef.on('value', (snapshot) => {
-                const online = snapshot.val();
-                const statusDot = document.getElementById('deviceStatus');
-                const statusText = document.getElementById('deviceStatusText');
-                if (online) {
-                    statusDot.className = 'status-dot online';
-                    statusText.textContent = 'Online';
+                    // Redirecionar para dashboard
+                    window.location.href = 'dashboard.html';
                 } else {
-                    statusDot.className = 'status-dot offline';
-                    statusText.textContent = 'Offline';
+                    showAlert('Nenhum dispositivo encontrado. Adicione um dispositivo na área administrativa.', 'error');
                 }
-            });
-        }
-
-        async function loadSchedule() {
-            const scheduleRef = await database.ref(`devices/${currentDevice}/schedule`).once('value');
-            const schedules = scheduleRef.val() || [];
-            
-            let html = '';
-            schedules.forEach((sch, index) => {
-                if (sch) {
-                    html += `
-                        <div class="schedule-item">
-                            <div class="schedule-time">⏰ ${sch.hora.toString().padStart(2,'0')}:${sch.minuto.toString().padStart(2,'0')}</div>
-                            <div class="schedule-actions">
-                                <button onclick="removeSchedule(${index})">Remover</button>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-            
-            document.getElementById('scheduleList').innerHTML = html || '<p>Nenhum horário programado</p>';
-        }
-
-        function manualFeed() {
-            database.ref(`devices/${currentDevice}/commands/manual_feed`).set(true);
-            alert('Comando enviado! O alimentador será acionado em alguns segundos.');
-        }
-        
-        function toggleRelay(type) {
-            const path = `devices/${currentDevice}/commands/${type}_relay`;
-            database.ref(path).once('value', (snapshot) => {
-                const currentState = snapshot.val();
-                database.ref(path).set(!currentState);
-            });
-        }
-        
-        function addSchedule() {
-            const timeInput = document.getElementById('scheduleTime').value;
-            if (timeInput) {
-                const [hora, minuto] = timeInput.split(':');
-                const scheduleRef = database.ref(`devices/${currentDevice}/schedule`);
-                scheduleRef.once('value', (snapshot) => {
-                    let schedules = snapshot.val() || [];
-                    schedules.push({hora: parseInt(hora), minuto: parseInt(minuto), ativo: true});
-                    scheduleRef.set(schedules);
-                    document.getElementById('scheduleTime').value = '';
-                    loadSchedule();
-                });
-            } else {
-                alert('Selecione um horário');
+            } catch (error) {
+                showAlert('Erro no login: ' + error.message, 'error');
             }
-        }
-        
-        function removeSchedule(index) {
-            const scheduleRef = database.ref(`devices/${currentDevice}/schedule`);
-            scheduleRef.once('value', (snapshot) => {
-                let schedules = snapshot.val() || [];
-                schedules.splice(index, 1);
-                scheduleRef.set(schedules);
-                loadSchedule();
-            });
-        }
+        });
 
-        function addDeviceModal() {
-            document.getElementById('addDeviceModal').style.display = 'flex';
-        }
-        
-        function closeModal() {
-            document.getElementById('addDeviceModal').style.display = 'none';
-        }
-        
-        async function addDevice() {
-            const deviceId = document.getElementById('newDeviceId').value.trim();
-            const deviceName = document.getElementById('newDeviceName').value.trim();
+        // Registro
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const deviceId = document.getElementById('regDeviceId').value;
             
-            if (!deviceId) {
-                alert('Digite o ID do dispositivo');
+            if (password.length < 6) {
+                showAlert('A senha deve ter no mínimo 6 caracteres', 'error');
                 return;
             }
             
             try {
-                // Verificar se dispositivo existe
-                const deviceCheck = await database.ref(`devices/${deviceId}`).once('value');
+                // Criar usuário no Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
                 
-                if (deviceCheck.exists()) {
-                    // Adicionar ao usuário
-                    await database.ref(`users/${currentUser.uid}/devices/${deviceId}`).set({
-                        name: deviceName || "Meu Aquário",
+                // Salvar dados do usuário no Realtime Database
+                await database.ref(`users/${user.uid}/profile`).set({
+                    name: name,
+                    email: email,
+                    created_at: Date.now()
+                });
+                
+                // Adicionar dispositivo se fornecido
+                if (deviceId && deviceId.trim() !== '') {
+                    await database.ref(`users/${user.uid}/devices/${deviceId}`).set({
+                        name: "Meu Aquário",
                         added_at: Date.now(),
                         active: true
                     });
                     
-                    // Adicionar permissão
-                    await database.ref(`devices/${deviceId}/permissions/${currentUser.uid}`).set({
-                        role: "user",
+                    // Atualizar permissões do dispositivo
+                    await database.ref(`devices/${deviceId}/owner`).set(user.uid);
+                    await database.ref(`devices/${deviceId}/permissions/${user.uid}`).set({
+                        role: "owner",
                         granted_at: Date.now()
                     });
-                    
-                    alert('Dispositivo adicionado com sucesso!');
-                    closeModal();
-                    loadDevices();
-                } else {
-                    alert('Dispositivo não encontrado. Verifique o ID e tente novamente.');
                 }
+                
+                showAlert('Cadastro realizado com sucesso! Faça login para continuar.', 'success');
+                
+                // Limpar formulário e mudar para login
+                document.getElementById('regName').value = '';
+                document.getElementById('regEmail').value = '';
+                document.getElementById('regPassword').value = '';
+                document.getElementById('regDeviceId').value = '';
+                switchTab('login');
+                
             } catch (error) {
-                alert('Erro ao adicionar dispositivo: ' + error.message);
+                showAlert('Erro no cadastro: ' + error.message, 'error');
             }
-        }
-
-        function logout() {
-            auth.signOut().then(() => {
-                window.location.href = 'index.html';
-            });
-        }
+        });
     </script>
 </body>
 </html>
